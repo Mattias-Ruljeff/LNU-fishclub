@@ -4,7 +4,7 @@ const logger = require("morgan");
 require("dotenv").config();
 
 const indexRouter = require("./routes/indexRouter");
-const fishRouter = require("./routes/fishRouter");
+const catchRouter = require("./routes/catchRouter");
 const loginRouter = require("./routes/userRoute");
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use("/", indexRouter);
 app.use("/users", loginRouter);
-app.use("/fish", fishRouter);
+app.use("/catch", catchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
