@@ -1,23 +1,31 @@
 const express = require("express");
 const logger = require("morgan");
-
 require("dotenv").config();
 
-const indexRouter = require("./routes/indexRouter");
+const mongoose = require("./config/database")
+
+const homeRouter = require("./routes/homeRouter");
 const catchRouter = require("./routes/catchRouter");
-const loginRouter = require("./routes/userRoute");
+const userRouter = require("./routes/userRouter");
 
 const app = express();
 const port = 3000;
+
+
+mongoose.connect().catch(error => {
+  console.log(error)
+  process.exit(1)
+})
 
 // view engine setup
 
 app.use(logger("dev"));
 app.use(express.json());
 
-app.use("/", indexRouter);
-app.use("/users", loginRouter);
-app.use("/catch", catchRouter);
+app.use("/api/v1", homeRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/catches", catchRouter);
+app.use("*", (req, res, next) => {res.status(404).json({message: "Not found" })});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

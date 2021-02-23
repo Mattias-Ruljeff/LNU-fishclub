@@ -5,24 +5,28 @@ const bcrypt = require("bcrypt");
 const users = [];
 
 function checkUserInput(req, res, next) {
+  console.log("checking input")
   if (!req.body.username || req.body.username.length < 5)
-    return res
-      .status(411)
-      .json({ error: "Enter a username that is longer than 3 characters" });
+  return res
+  .status(411)
+  .json({ error: "Enter a username that is longer than 3 characters" });
   if (!req.body.password || req.body.password.length < 7)
-    return res
-      .status(411)
-      .json({ error: "Enter a password that is longer than 7 characters" });
+  return res
+  .status(411)
+  .json({ error: "Enter a password that is longer than 7 characters" });
   next();
 }
 
 async function authenticate(req, res, next) {
+  console.log("authenticating")
   const user = users.find((user) => user.username === req.body.username);
 
   if (user) {
     try {
-      console.log();
+      console.log("authenticating, user exists");
       if (await bcrypt.compare(req.body.password, user.password)) {
+        
+        console.log("authenticating complete");
         next();
         return;
       } else {
@@ -39,15 +43,13 @@ async function authenticate(req, res, next) {
 }
 
 async function createUser(req, res, next) {
-  if (users.some((user) => user.username === req.body.username)) {
-    res.status(400).json({ error: "Username is already taken" });
-    return;
-  } else {
-    const hashedPassWord = await bcrypt.hash(req.body.password, 10);
-    users.push({ username: req.body.username, password: hashedPassWord });
-    console.log(users);
-    next();
-  }
+  // if (users.some((user) => user.username === req.body.username)) {
+  //   res.status(400).json({ error: "Username is already taken" });
+  //   return;
+  // } else {
+  //   const hashedPassWord = await bcrypt.hash(req.body.password, 10);
+  //   users.push({ username: req.body.username, password: hashedPassWord });
+  //   console.log(users);
 }
 
 async function checkToken(req, res, next) {

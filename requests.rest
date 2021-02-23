@@ -1,26 +1,31 @@
-GET http://localhost:3000/
+GET http://localhost:3000/api/v1
 
 
 ### Create user
 
-POST http://localhost:3000/user/
+POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
     "username": "user1",
-    "password": "password2"
+    "password": "password12"
 }
 
 ### Login user
-POST http://localhost:3000/user/login
+POST http://localhost:3000/api/v1/login
 Content-Type: application/json
 
 {
     "username": "user1",
-    "password": "password2"
+    "password": "password12"
 }
 
 ###
 
-GET http://localhost:3000/user/logged-in
+GET http://localhost:3000/api/v1/users/logged-in
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlcjIiLCJpYXQiOjE2MTI4NjI0NDIsImV4cCI6MTYxMjg2NjA0Mn0.Ob9zNU4JBVs7E8d5aprJGc2PkVKlSmgTQY_SOILJaI8
+
+
+### Catch requests
+
+GET http://localhost:3000/api/v1/catches
