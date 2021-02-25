@@ -22,8 +22,8 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/v1/users/logged-in
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlcjIiLCJpYXQiOjE2MTI4NjI0NDIsImV4cCI6MTYxMjg2NjA0Mn0.Ob9zNU4JBVs7E8d5aprJGc2PkVKlSmgTQY_SOILJaI8
+GET http://localhost:3000/api/v1/catches
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDAsImRhdGEiOiJ1c2VyMSIsImlhdCI6MTYxNDA5MDkwOX0.ruUMlSOKLEmcjKt5E5HNYHNHDn_Or9Pbq9mCxnCffJs
 
 
 ### Catch requests

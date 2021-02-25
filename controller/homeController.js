@@ -6,7 +6,7 @@
  */
 
 'use strict'
-
+require("dotenv").config();
 const User = require('../models/userModel')
 const jwt = require("jsonwebtoken")
 
@@ -35,8 +35,11 @@ catchController.login = async (req, res) => {
       const compare = await user.comparePassword(req.body.password)
       console.log(compare)
       if (user && compare) {
-        res.status(200).json({ message: "User logged in!" })
-        jwt.sign()
+        const token = jwt.sign({
+          exp: 3600,
+          data: req.body.username
+        }, process.env.JWT_TOKEN_SECRET);      
+        res.status(200).json({ message: "User logged in!", token })
       } else {
         res.status(400).json({ message: "Username or password incorrect" })
       }
