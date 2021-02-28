@@ -18,7 +18,19 @@ const catchController = {}
  * @param {object} res - Express response object.
  */
 catchController.index = async (req, res) => {
-  res.json({ msg: "All fish"})
+try {
+  Catch.find({}, (catches, err) => {
+    if (error) {
+      res.status(400).json({message:"Error while fetching catches",error})
+    }
+    res.status(200).json({message: "All catches", catches})
+  })
+  
+} catch (error) {
+  res.status(500).json({message:"Error while fetching catches", error})
+}
+
+  res.json({ message: "All catches"})
 }
 
 /**
@@ -28,7 +40,30 @@ catchController.index = async (req, res) => {
  * @param {object} res - Express response object.
  */
 catchController.logCatch = async (req, res) => {
-  res.json({ msg: "Log catched fish"})
+  if (req.body) {
+    const {username, fishType, fishLength, fishWeight, longAndLatPos, city, lake} = req.body
+    
+    try {
+      const newCatch = new Catch({
+        username: username,
+        fishType: fishType,
+        fishLength: fishLength,
+        fishWeight: fishWeight,
+        longAndLatPos: longAndLatPos,
+        city: city,
+        lake: lake
+      })
+      
+      await newCatch.save()
+      res.status(201).json({message: "Catch saved!"})
+      
+      
+    } catch (error) {
+      
+      res.status(500).json({message: "Error while creating user...", error: error.message})
+    }
+  }
+  // res.status(200).json({message: "Catch saved"})
 }
 
 module.exports = catchController

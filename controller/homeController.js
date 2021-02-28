@@ -36,9 +36,8 @@ catchController.login = async (req, res) => {
       console.log(compare)
       if (user && compare) {
         const token = jwt.sign({
-          exp: 3600,
           data: req.body.username
-        }, process.env.JWT_TOKEN_SECRET);      
+        }, process.env.JWT_TOKEN_SECRET, { expiresIn: 3600 });      
         res.status(200).json({ message: "User logged in!", token })
       } else {
         res.status(400).json({ message: "Username or password incorrect" })

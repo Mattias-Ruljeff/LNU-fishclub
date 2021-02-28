@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/v1
+GET http://localhost:3000/api/v1/users
 
 
 ### Create user
@@ -23,9 +23,37 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/api/v1/catches
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDAsImRhdGEiOiJ1c2VyMSIsImlhdCI6MTYxNDA5MDkwOX0.ruUMlSOKLEmcjKt5E5HNYHNHDn_Or9Pbq9mCxnCffJs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidXNlcjEiLCJpYXQiOjE2MTQ0NTUyMTYsImV4cCI6MTYxNDQ1ODgxNn0.XA93gyM_URhs85ITuZVgPKiYIGHCDy8QyR0kfXNa1d4
 
+### Catch requests---------------
 
-### Catch requests
-
+### Get all catches
 GET http://localhost:3000/api/v1/catches
+
+### Add new catch
+POST http://localhost:3000/api/v1/catches
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "fishType": "bass",
+    "fishLength": "20cm",
+    "fishWeight": "1000g",
+    "longAndLatPos": "41.40338, 2.17403",
+    "city": "Ankeborg",
+    "lake": "plasket",
+}
+###
+
+POST http://localhost:3000/api/v1/catches
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "fishType": "bass",
+    "fishLength": "20cm",
+    "fishWeight": "1000g",
+    "longAndLatPos": "41.40338, 2.17403",
+    "city": "Ankeborg",
+    "lake": "plasket"
+}

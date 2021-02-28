@@ -18,7 +18,18 @@ const newuserController = {}
  * @param {object} res - Express response object.
  */
 newuserController.index = async (req, res) => {
-  res.json({ msg: "All users"})
+  const allUsers = User.find({}, (err, users) => {
+    if(err) req.status(400).json({message: "Error while fetching users", err})
+    if(users) {
+      let allUsers = []
+      users.map((user) => {
+        allUsers.push({username: user.username})
+      })
+      res.status(200).json({ message: "All users", allUsers })
+    } else {
+      res.status(500).json({ message: "Error while getting all users" })
+    }
+  })
 }
 
 /**

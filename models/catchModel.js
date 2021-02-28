@@ -11,7 +11,6 @@ const mongoose = require('mongoose')
 
 // The schema for creating a snippet.
 const CatchSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   username: {
     type: String,
     required: true
@@ -20,16 +19,16 @@ const CatchSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  lenght: {
-    type: Number,
+  fishLength: {
+    type: String,
     required: true
   },
-  weight: {
-    type: Number,
+  fishWeight: {
+    type: String,
     required: true
   },
-  longAndLat: {
-    type: Object,
+  longAndLatPos: {
+    type: String,
     required: false
   },
   city: {
