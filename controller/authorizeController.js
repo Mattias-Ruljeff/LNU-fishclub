@@ -5,12 +5,13 @@
  * @version 1.0
  */
 
-'use strict'
+"use strict";
 require("dotenv").config();
-const User = require('../models/userModel')
-const jwt = require("jsonwebtoken")
+const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+const { links } = require("../lib/hateoas");
 
-const catchController = {}
+const authController = {};
 
 /**
  * Checks the Json web token.
@@ -18,21 +19,44 @@ const catchController = {}
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
  */
-catchController.check = async (req, res) => {
-  console.log(req.headers["authorization"]);
+authController.checkToken = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log(token);
-  if (token === null) return res.status(401).json({ error: "No token set" });
+  if (token === null)
+    return res.status(401).json({ error: "No token set", links: links(req) });
   try {
     jwt.verify(token, process.env.JWT_TOKEN_SECRET, (error, user) => {
-      if (error) return res.status(403).json({ error: error });
-      req.user = user.name;
+      if (error)
+        return res.status(403).json({ error: error, links: links(req) });
+      req.user = { username: user.data, token };
       next();
     });
   } catch (error) {
     res.status(500).json({ error: "Error when checking access-token" });
   }
-}
+};
 
-module.exports = catchController
+/**
+ * Checks if a user exists in the DB.
+ *
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
+authController.checkUserInDb = async (req, res, next) => {
+  try {
+    const userFromDb = await User.find({ username: req.body.username });
+    if (userFromDb.length > 0) {
+      next();
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Error when finding user, user not available" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error when finding user", error: error.message });
+  }
+};
+
+module.exports = authController;

@@ -1,3 +1,7 @@
+### Home
+GET http://localhost:3000/api/v1/
+
+### Get all users
 GET http://localhost:3000/api/v1/users
 
 
@@ -7,18 +11,19 @@ POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-    "username": "user2",
+    "username": "mattias",
     "password": "password12"
 }
 
 ### Login user
-POST http://localhost:3000/api/v1/login
+POST http://localhost:3000/api/v1/users/login
 Content-Type: application/json
 
 {
-    "username": "user1",
+    "username": "mattias",
     "password": "password12"
 }
+
 ### Delete user
 DELETE  http://localhost:3000/api/v1/users
 Content-Type: application/json
@@ -38,46 +43,57 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidXNlcjEiL
 GET http://localhost:3000/api/v1/catches
 
 ### Get one users catches
-GET http://localhost:3000/api/v1/catches/user1
+GET http://localhost:3000/api/v1/catches/user2
 
 ### Add new catch
 POST http://localhost:3000/api/v1/catches/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibWF0dGlhcyIsImlhdCI6MTYxNDYwODMwNSwiZXhwIjoxNjE0NjExOTA1fQ.3VIYXd-GufbYeDG467YbXYpBvXfvNiD3uD4RbhsRFjE
 Content-Type: application/json
 
 {
-    "username": "user1",
-    "fishType": "bass",
-    "fishLength": "20cm",
-    "fishWeight": "1000g",
-    "longAndLatPos": "41.40338, 2.17403",
-    "city": "Ankeborg",
-    "lake": "plasket",
+    "username": "mattias",
+    "fishType": "perch",
+    "fishLength": "25cm",
+    "fishWeight": "800g",
+    "longAndLatPos": "57.957988, 12.725058",
+    "city": "Vårgårda",
+    "lake": "StorSjön"
 }
-###
 
-POST http://localhost:3000/api/v1/catches
-Content-Type: application/json
-
-{
-    "username": "user1",
-    "fishType": "bass",
-    "fishLength": "20cm",
-    "fishWeight": "1000g",
-    "longAndLatPos": "41.40338, 2.17403",
-    "city": "Ankeborg",
-    "lake": "plasket"
-}
 ### Update catch
+
+PUT http://localhost:3000/api/v1/catches
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidXNlcjIiLCJpYXQiOjE2MTQ2MDU1NjEsImV4cCI6MTYxNDYwOTE2MX0.4Z3a5N8ePorVImMXEdlHR1XRpLrJCx2A_8E_xXJN5-M
+Content-Type: application/json
+
+{
+    "id": "603cdcc24612585bb0cebc30", 
+    "username": "user2",
+    "fishType": "bass",
+    "fishLength": "20cm",
+    "fishWeight": "1000g",
+    "longAndLatPos": "41.40338, 2.17403",
+    "city": "Ankeborg",
+    "lake": "plaskdammen"
+}
+### Update catch only length
 
 PUT http://localhost:3000/api/v1/catches
 Content-Type: application/json
 
 {
+    "id": "603b3f36d6335d39f442689e", 
     "username": "user1",
-    "fishType": "bass",
-    "fishLength": "20cm",
-    "fishWeight": "1000g",
-    "longAndLatPos": "41.40338, 2.17403",
-    "city": "Ankeborg",
-    "lake": "plasket"
+    "fishLength": "20cm"
+
+}
+### Delete catch
+
+DELETE http://localhost:3000/api/v1/catches
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibWF0dGlhcyIsImlhdCI6MTYxNDYwODMwNSwiZXhwIjoxNjE0NjExOTA1fQ.3VIYXd-GufbYeDG467YbXYpBvXfvNiD3uD4RbhsRFjE
+Content-Type: application/json
+
+{
+    "id": "603cf5db73475b35945c06f6", 
+    "username": "user1"
 }

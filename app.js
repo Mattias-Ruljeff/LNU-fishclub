@@ -8,6 +8,8 @@ const homeRouter = require("./routes/homeRouter");
 const catchRouter = require("./routes/catchRouter");
 const userRouter = require("./routes/userRouter");
 
+const { links } = require("./lib/hateoas");
+
 const app = express();
 const port = 3000;
 
@@ -25,7 +27,7 @@ app.use("/api/v1", homeRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/catches", catchRouter);
 app.use("*", (req, res, next) => {
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "Not found", links: links(req) });
 });
 
 // catch 404 and forward to error handler
