@@ -7,7 +7,7 @@ POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-    "username": "user1",
+    "username": "user2",
     "password": "password12"
 }
 
@@ -18,6 +18,13 @@ Content-Type: application/json
 {
     "username": "user1",
     "password": "password12"
+}
+### Delete user
+DELETE  http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+    "username": "user2"
 }
 
 ###
