@@ -4,9 +4,12 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 
-const controller = require("../controller/userController")
+const controller = require("../controller/userController");
 
-router.get("/", controller.index)
-.post("/", controller.newUser)
+// User router
+router
+  .get("/", controller.index)
+  .post("/", controller.newUser)
+  .delete("/", controller.deleteUser);
 
 module.exports = router;
