@@ -14,34 +14,16 @@ const { links } = require("./lib/hateoas");
 const app = express();
 const port = 3000;
 
-var url = require("url");
-var HttpsProxyAgent = require("https-proxy-agent");
-var request = require("request");
-
-var testEndpoint = "https://lnu-fishclub.herokuapp.com/";
-var proxy = process.env.QUOTAGUARDSHIELD_URL;
-var agent = new HttpsProxyAgent(proxy);
-var options = {
-  uri: url.parse(testEndpoint),
-  agent,
-};
-
-function callback(error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log("body: ", body);
-  } else {
-    console.log("error: ", error);
-  }
-}
-
-request(options, callback);
-
 mongoose.connect().catch((error) => {
   console.log(error);
   process.exit(1);
 });
 
-// view engine setup
+app.set("trust proxy", function (ip) {
+  if (ip === "127.0.0.1" || ip === "123.123.123.123") return true;
+  // trusted IPs
+  else return false;
+});
 
 app.use(logger("dev"));
 app.use(express.json());
