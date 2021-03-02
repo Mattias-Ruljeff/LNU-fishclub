@@ -20,7 +20,7 @@ mongoose.connect().catch((error) => {
 });
 
 app.set("trust proxy", function (ip) {
-  if (ip === "127.0.0.1" || ip === "123.123.123.123") return true;
+  if (ip === "99.81.30.178" || ip === "18.200.77.86") return true;
   // trusted IPs
   else return false;
 });
