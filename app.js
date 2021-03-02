@@ -14,29 +14,30 @@ const { links } = require("./lib/hateoas");
 const app = express();
 const port = 3000;
 
-var http, options, proxy, url;
+("use strict");
+require("dotenv").load({ silent: true });
 
-http = require("http");
+var url = require("url");
+var HttpsProxyAgent = require("https-proxy-agent");
+var request = require("request");
 
-url = require("url");
-
-proxy = url.parse(process.env.QUOTAGUARDSTATIC_URL);
-target = url.parse("https://lnu-fishclub.herokuapp.com/");
-
-options = {
-  hostname: proxy.hostname,
-  port: proxy.port || 80,
-  path: target.href,
-  headers: {
-    "Proxy-Authorization": "Basic " + new Buffer(proxy.auth).toString("base64"),
-    Host: target.hostname,
-  },
+var testEndpoint = "https://lnu-fishclub.herokuapp.com/";
+var proxy = process.env.QUOTAGUARDSHIELD_URL;
+var agent = new HttpsProxyAgent(proxy);
+var options = {
+  uri: url.parse(testEndpoint),
+  agent,
 };
 
-http.get(options, function (res) {
-  res.pipe(process.stdout);
-  return console.log("status code", res.statusCode);
-});
+function callback(error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log("body: ", body);
+  } else {
+    console.log("error: ", error);
+  }
+}
+
+request(options, callback);
 
 mongoose.connect().catch((error) => {
   console.log(error);
