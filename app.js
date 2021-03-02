@@ -47,8 +47,10 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
 });
 
-app.listen(process.env.port || port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log(
+    `Example app listening at http://localhost:${process.env.PORT || port}`
+  );
 });
 
 module.exports = app;
