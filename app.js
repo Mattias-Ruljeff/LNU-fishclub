@@ -47,7 +47,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
 });
 
-app.listen(port, () => {
+app.listen(process.env.port || port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 

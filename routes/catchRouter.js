@@ -15,11 +15,21 @@ router
     controller.logCatch,
     webhook.notifySubscribers
   )
-  .put("/", authorize.checkToken, controller.updateCatch)
+  .put(
+    "/",
+    authorize.checkToken,
+    controller.updateCatch,
+    webhook.notifySubscribers
+  )
 
   .get("/find/:catchId", controller.getOneCatch)
 
   .get("/from-one-user", controller.getOneUsersCatches)
-  .delete("/", authorize.checkToken, controller.deleteOneCatch);
+  .delete(
+    "/",
+    authorize.checkToken,
+    controller.deleteOneCatch,
+    webhook.notifySubscribers
+  );
 
 module.exports = router;
