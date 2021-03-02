@@ -12,6 +12,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 const { usersLinks } = require("../lib/hateoas");
+const { NotExtended } = require("http-errors");
 
 const newuserController = {};
 
@@ -22,7 +23,7 @@ const newuserController = {};
  * @param {object} res - Express response object.
  */
 newuserController.index = async (req, res) => {
-  const allUsers = User.find({}, (err, users) => {
+  User.find({}, (err, users) => {
     if (err)
       res.status(400).json({ message: "Error while fetching users", err });
     if (users) {
@@ -52,7 +53,6 @@ newuserController.login = async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     if (user) {
       const compare = await user.comparePassword(req.body.password);
-      console.log(compare);
       if (user && compare) {
         const token = jwt.sign(
           {
@@ -75,27 +75,46 @@ newuserController.login = async (req, res) => {
   }
 };
 
-newuserController.logout = async (req, res) => {
-  res.json({ msg: "Logged out" });
-};
-
 /**
  * Fetch one user in the database.
  *
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
  */
-newuserController.getUser = async (req, res) => {
+newuserController.getUser = async (req, res, next) => {
+  console.log(req.body);
   try {
-    User.findOne({ username: req.params.username }, (err, user) => {
+    User.findOne({ username: req.body.username }, (err, user) => {
       if (err)
         res.status(400).json({ message: "Error when fetching users", err });
       if (user) {
         res.status(200).json({
-          message: "User found",
+          message: "User found!",
           links: usersLinks(req),
-          result: { username: user.username, createdAt: user.createdAt },
+          result: { id: user.id, username: user.username },
         });
+      } else {
+        res
+          .status(400)
+          .json({ message: "User not found", links: usersLinks(req) });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error when getting user",
+      error: error,
+      message,
+    });
+  }
+};
+newuserController.checkUser = async (req, res, next) => {
+  console.log(req.body);
+  try {
+    User.findOne({ username: req.body.username }, (err, user) => {
+      if (err)
+        res.status(400).json({ message: "Error when fetching users", err });
+      if (user) {
+        next();
       } else {
         res
           .status(400)
@@ -125,12 +144,14 @@ newuserController.newUser = async (req, res) => {
     });
 
     await user.save();
-    res.status(201).json({ message: "User created!" });
+    res.status(201).json({ message: "User created!", links: usersLinks(req) });
   } catch (error) {
     // If an error, or validation error, occurred, view the form and an error message.
-    res
-      .status(500)
-      .json({ message: "Error while creating user...", error: error.message });
+    res.status(500).json({
+      message: "Error while creating user...",
+      error: error.message,
+      links: usersLinks(req),
+    });
   }
 };
 
@@ -142,13 +163,25 @@ newuserController.newUser = async (req, res) => {
  */
 newuserController.deleteUser = async (req, res) => {
   try {
-    await User.deleteOne({ username: req.body.username });
-    res.status(201).json({ message: "User deleted." });
+    User.findOneAndDelete({ username: req.body.username }, (error) => {
+      if (error) {
+        res.status(400).json({
+          message: "Error when deleting user",
+          error: error,
+          links: usersLinks(req),
+        });
+      }
+      res
+        .status(200)
+        .json({ message: "User deleted.", links: usersLinks(req) });
+    });
   } catch (error) {
     // If an error, or validation error, occurred, view the form and an error message.
-    res
-      .status(500)
-      .json({ message: "Error while creating user...", error: error.message });
+    res.status(500).json({
+      message: "Error while creating user...",
+      error: error.message,
+      links: usersLinks(req),
+    });
   }
 };
 

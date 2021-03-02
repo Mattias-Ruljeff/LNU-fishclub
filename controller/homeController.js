@@ -7,7 +7,7 @@
 
 "use strict";
 require("dotenv").config();
-const { links } = require("../lib/hateoas");
+const { links, webhookLinks } = require("../lib/hateoas");
 
 const homeController = {};
 
@@ -19,7 +19,7 @@ const homeController = {};
  */
 homeController.index = async (req, res) => {
   res.status(200).json({
-    message: "Root",
+    message: "Lnu Fish Club!",
     links: links(req),
   });
 };

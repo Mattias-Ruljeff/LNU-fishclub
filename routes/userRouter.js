@@ -15,13 +15,16 @@ router
   .get("/", controller.index)
   .post("/", controller.newUser)
 
-  .get("/logout/:username", authorize.checkToken, controller.logout)
-
   .post("/login", controller.login)
 
-  .delete("/", controller.deleteUser)
+  .delete(
+    "/",
+    authorize.checkToken,
+    controller.checkUser,
+    controller.deleteUser
+  )
 
-  .get("/find/:username", controller.getUser)
+  .get("/find", controller.getUser)
 
   .get("/*", controller.error);
 

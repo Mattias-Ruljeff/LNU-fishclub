@@ -8,7 +8,10 @@ const authorize = require("../controller/authorizeController");
 // router.get("/", authorize.checkToken, controller.index);
 router
   .get("/", controller.index)
-  .post("/", controller.createSubscriber)
-  .post("/notify-subscribers", controller.notifySubscribers);
+  .get("/subscribers", controller.getAllSubscribers)
+  .post("/subscribers", controller.createSubscriber)
+  .put("/subscribers", controller.updateOneSubscriber)
+  .delete("/subscribers", controller.deleteOneSubscriber);
+// .post("/subscribers/notify", controller.notifySubscribers);
 
 module.exports = router;

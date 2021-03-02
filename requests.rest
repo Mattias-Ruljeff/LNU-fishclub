@@ -32,11 +32,6 @@ Content-Type: application/json
     "username": "user2"
 }
 
-###
-
-GET http://localhost:3000/api/v1/catches
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidXNlcjEiLCJpYXQiOjE2MTQ0NTUyMTYsImV4cCI6MTYxNDQ1ODgxNn0.XA93gyM_URhs85ITuZVgPKiYIGHCDy8QyR0kfXNa1d4
-
 ### Catch requests---------------
 
 ### Get all catches
@@ -47,14 +42,14 @@ GET http://localhost:3000/api/v1/catches/user2
 
 ### Add new catch
 POST http://localhost:3000/api/v1/catches/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibWF0dGlhcyIsImlhdCI6MTYxNDYwODMwNSwiZXhwIjoxNjE0NjExOTA1fQ.3VIYXd-GufbYeDG467YbXYpBvXfvNiD3uD4RbhsRFjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibWF0dGlhcyIsImlhdCI6MTYxNDY5MTc4OSwiZXhwIjoxNjE0NjkzNTg5fQ.mksIGhcB9COE5HgxsegqGwFOBApsia6M5a8JGjRn4oo
 Content-Type: application/json
 
 {
     "username": "mattias",
-    "fishType": "perch",
-    "fishLength": "25cm",
-    "fishWeight": "800g",
+    "fishType": "fesk",
+    "fishLength": "2005cm",
+    "fishWeight": "80000g",
     "longAndLatPos": "57.957988, 12.725058",
     "city": "Vårgårda",
     "lake": "StorSjön"
@@ -101,21 +96,38 @@ Content-Type: application/json
 ### Webhooks ---------------------------------------
 
 ### Get all subscribers
-GET http://localhost:3000/api/v1/webhook
+GET http://localhost:3000/api/v1/webhook/subscribers
 
 ### Create new subscriber
 
-POST http://localhost:3000/api/v1/webhook
+POST http://localhost:3000/api/v1/webhook/subscribers
 Content-Type: application/json
 
 {
-    "url": "http://localhost:5000/webhooks"
+    "url": "http://localhost:4000/webhooks"
 }
 
 ### Notify subscribers
-POST http://localhost:3000/api/v1/webhook/notify-subscribers
+POST http://localhost:3000/api/v1/webhook/subscribers/notify
 Content-Type: application/json
 
 {
-    "message": "Meddelande fran webhook"
+    "message": "Nytt Meddelande från webhook"
+}
+
+### Update subscriber
+PUT http://localhost:3000/api/v1/webhook/subscribers
+Content-Type: application/json
+
+{
+    "id": "603e3d2bf8444129a8a880c5",
+    "url": "http://localhost:5000/webhooks"
+}
+
+### Delete subscriber
+DELETE  http://localhost:3000/api/v1/webhook/
+Content-Type: application/json
+
+{
+    "id": "603e36eb1ef1e0308ca94a6c"
 }

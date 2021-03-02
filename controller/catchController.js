@@ -59,16 +59,22 @@ catchController.getOneCatch = async (req, res) => {
           err,
         });
       }
-      res.status(200).json({
-        message: `Catch found!`,
-        links: links(req),
-        result: oneCatch,
-      });
+      if (oneCatch) {
+        res.status(200).json({
+          message: `Catch found!`,
+          links: links(req),
+          result: oneCatch,
+        });
+      } else {
+        res
+          .status(400)
+          .json({ message: "No catch found", links: catchesLinks(req) });
+      }
     });
   } catch (error) {
     res.status(500).json({
       message: "Error when fetching catches",
-      links: catchesLinks,
+      links: catchesLinks(req),
       error: error,
     });
   }
@@ -81,8 +87,9 @@ catchController.getOneCatch = async (req, res) => {
  * @param {object} res - Express response object.
  */
 catchController.getOneUsersCatches = async (req, res) => {
+  console.log(req.body);
   try {
-    Catch.find({ username: `${req.params.username}` }, (err, catches) => {
+    Catch.find({ username: `${req.body.username}` }, (err, catches) => {
       if (err) {
         res.status(400).json({ message: "Error when fetching catches", err });
       }
@@ -90,7 +97,7 @@ catchController.getOneUsersCatches = async (req, res) => {
         res.status(200).json({ message: "No cathes registered" });
       } else {
         res.status(200).json({
-          message: `All catches from user: ${req.params.username}`,
+          message: `All catches from user: ${req.body.username}`,
           result: catches,
         });
       }
@@ -106,7 +113,7 @@ catchController.getOneUsersCatches = async (req, res) => {
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
  */
-catchController.logCatch = async (req, res) => {
+catchController.logCatch = async (req, res, next) => {
   if (req.body) {
     const {
       fishType,
@@ -129,7 +136,8 @@ catchController.logCatch = async (req, res) => {
         lake: lake,
       });
       await newCatch.save();
-      res.status(201).json({ message: "Catch saved!" });
+      res.status(201).json({ message: "Catch saved!", catchId: newCatch.id });
+      next();
     } catch (error) {
       res.status(500).json({
         message: "Error when logging catch...",
@@ -146,7 +154,8 @@ catchController.logCatch = async (req, res) => {
  * @param {object} res - Express response object.
  */
 catchController.updateCatch = async (req, res) => {
-  if (req.body.id && req.body.username) {
+  console.log(req.body);
+  if (req.body.id) {
     try {
       const catchFromDB = await Catch.findById(req.body.id, (err, doc) => {
         if (err) {
@@ -166,7 +175,7 @@ catchController.updateCatch = async (req, res) => {
         lake = catchFromDB.lake,
       } = req.body;
 
-      if (username === catchFromDB.username) {
+      if (req.user.username === catchFromDB.username) {
         Catch.findByIdAndUpdate(
           id,
           {
@@ -186,10 +195,18 @@ catchController.updateCatch = async (req, res) => {
                 error: err.message,
               });
             } else {
-              res.status(200).json({ message: `Catch ${id} updated!` });
+              res.status(200).json({
+                message: `Catch ${id} updated!`,
+                links: catchesLinks(req),
+              });
             }
           }
         );
+      } else {
+        res.status(401).json({
+          message: "User not authorized to change catch information",
+          links: catchesLinks(req),
+        });
       }
     } catch (error) {
       // If an error, or validation error, occurred, view the form and an error message.
@@ -209,45 +226,43 @@ catchController.updateCatch = async (req, res) => {
  * @param {object} res - Express response object.
  */
 catchController.deleteOneCatch = async (req, res) => {
-  if (req.body.id && req.body.username) {
+  console.log(req.body);
+  if (req.body.id) {
     try {
       const { id, username } = req.body;
       console.log(id, "req.body.id");
-      const catchFromDB = await Catch.findOne(
-        { _id: req.body.id },
-        (err, data) => {
-          if (err) {
-            return res
-              .status(400)
-              .json({ message: "Error while fetching catch", error: err });
-          }
+      await Catch.findOne({ _id: req.body.id }, (err, data) => {
+        if (err) {
+          return res
+            .status(400)
+            .json({ message: "Error while fetching catch", error: err });
+        }
 
-          // If the body is not providing all parameters, set the default values from the database.
-          if (data) {
-            console.log(data.username);
-            if (username === data.username) {
-              Catch.deleteOne({ _id: id }, (err) => {
-                if (err) {
-                  res.status(500).json({
-                    message: "Error when deleting catch",
-                    error: err.message,
-                  });
-                } else {
-                  res.status(200).json({ message: `Catch ${id} deleted` });
-                }
-              });
-            } else {
-              res.status(401).json({
-                message: "Error when deleting catch, username does not match",
-              });
-            }
+        // If the body is not providing all parameters, set the default values from the database.
+        if (data) {
+          console.log(data.username);
+          if (req.user.username === data.username) {
+            Catch.deleteOne({ _id: id }, (err) => {
+              if (err) {
+                res.status(500).json({
+                  message: "Error when deleting catch",
+                  error: err.message,
+                });
+              } else {
+                res.status(200).json({ message: `Catch ${id} deleted` });
+              }
+            });
           } else {
-            res.status(400).json({
-              message: "Error when deleting catch, id not found",
+            res.status(401).json({
+              message: "Error when deleting catch, username does not match",
             });
           }
+        } else {
+          res.status(400).json({
+            message: "Error when deleting catch, id not found",
+          });
         }
-      );
+      });
     } catch (error) {
       // If an error, or validation error, occurred, view the form and an error message.
       return res

@@ -31,7 +31,7 @@ app.use("/api/v1/webhook", webhookRouter);
 app.use("*", (req, res, next) => {
   res.status(404).json({ message: "Not found", links: links(req) });
 });
-
+console.log(process.env.NODE_ENV);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   console.log("EEERRROOOORRR");
