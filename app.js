@@ -21,7 +21,7 @@ http = require("http");
 url = require("url");
 
 proxy = url.parse(process.env.QUOTAGUARDSTATIC_URL);
-target = url.parse("https://lnu-fishclub.herokuapp.com/");
+target = url.parse("http://ip.quotaguard.com/");
 
 options = {
   hostname: proxy.hostname,
