@@ -1,5 +1,5 @@
 /**
- * New catch Controller.
+ * Authorization Controller.
  *
  * @author Mattias Ruljeff
  * @version 1.0

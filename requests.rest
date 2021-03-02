@@ -97,3 +97,24 @@ Content-Type: application/json
     "id": "603cf5db73475b35945c06f6", 
     "username": "user1"
 }
+
+### Webhooks ---------------------------------------
+
+### Get all subscribers
+GET http://localhost:3000/api/v1/webhook
+
+### Create new subscriber
+
+POST http://localhost:3000/api/v1/webhook
+Content-Type: application/json
+
+{
+    "url": "http://localhost:5000/webhooks"
+}
+### Notify subscribers
+POST http://localhost:3000/api/v1/webhook/notify-subscribers
+Content-Type: application/json
+
+{
+    "message": "Meddelande fran webhook"
+}

@@ -1,5 +1,5 @@
 /**
- * New catch Controller.
+ * Catch Controller.
  *
  * @author Mattias Ruljeff
  * @version 1.0

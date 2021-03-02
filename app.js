@@ -7,6 +7,7 @@ const mongoose = require("./config/database");
 const homeRouter = require("./routes/homeRouter");
 const catchRouter = require("./routes/catchRouter");
 const userRouter = require("./routes/userRouter");
+const webhookRouter = require("./routes/webhookRouter");
 
 const { links } = require("./lib/hateoas");
 
@@ -26,13 +27,14 @@ app.use(express.json());
 app.use("/api/v1", homeRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/catches", catchRouter);
+app.use("/api/v1/webhook", webhookRouter);
 app.use("*", (req, res, next) => {
   res.status(404).json({ message: "Not found", links: links(req) });
 });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  console.log("EEERRROOOORRR");
 });
 
 // error handler
