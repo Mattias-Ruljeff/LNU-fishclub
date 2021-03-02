@@ -14,9 +14,6 @@ const { links } = require("./lib/hateoas");
 const app = express();
 const port = 3000;
 
-("use strict");
-require("dotenv").load({ silent: true });
-
 var url = require("url");
 var HttpsProxyAgent = require("https-proxy-agent");
 var request = require("request");
