@@ -60,7 +60,7 @@ webhookController.createSubscriber = async (req, res) => {
 
 webhookController.notifySubscribers = async (req, res) => {
   try {
-    console.log(JSON.stringify(req.body.message));
+    console.log(JSON.stringify(req.body));
     WebHook.find({}, (error, hooks) => {
       if (error) {
         return res.status(400).json({
@@ -74,7 +74,7 @@ webhookController.notifySubscribers = async (req, res) => {
         fetch(url, {
           headers: { "Content-Type": "application/json" },
           method: "POST",
-          body: JSON.stringify(req.body.message),
+          body: JSON.stringify(req.body),
         })
           .then(console.log("sent"))
           .catch((error) =>

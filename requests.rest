@@ -111,6 +111,7 @@ Content-Type: application/json
 {
     "url": "http://localhost:5000/webhooks"
 }
+
 ### Notify subscribers
 POST http://localhost:3000/api/v1/webhook/notify-subscribers
 Content-Type: application/json
