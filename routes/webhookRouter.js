@@ -4,8 +4,8 @@ var router = express.Router();
 const controller = require("../controller/webhookController");
 const authorize = require("../controller/authorizeController");
 
-/* GET users listing. */
-// router.get("/", authorize.checkToken, controller.index);
+// Webhook router
+
 router
   .get("/", controller.index)
   .get("/subscribers", controller.getAllSubscribers)

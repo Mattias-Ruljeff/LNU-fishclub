@@ -14,6 +14,7 @@ const { links } = require("./lib/hateoas");
 const app = express();
 const port = 3000;
 
+// Connect to database.
 mongoose.connect().catch((error) => {
   console.log(error);
   process.exit(1);

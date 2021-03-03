@@ -5,8 +5,8 @@ const controller = require("../controller/catchController");
 const webhook = require("../controller/webhookController");
 const authorize = require("../controller/authorizeController");
 
-/* GET users listing. */
-// router.get("/", authorize.checkToken, controller.index);
+// Catch router
+
 router
   .get("/", controller.index)
   .post(

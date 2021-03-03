@@ -41,6 +41,48 @@ newuserController.index = async (req, res) => {
 };
 
 /**
+ * Saves the created user to the DB.
+ *
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
+newuserController.newUser = async (req, res) => {
+  User.findOne({ username: req.body.username }, async (error, user) => {
+    if (error)
+      res.status(400).json({
+        message: "Error when fetching users",
+        error,
+        links: usersLinks(req),
+      });
+    if (user) {
+      res.status(400).json({
+        message: "Username or password error, when creating user",
+        links: usersLinks(req),
+      });
+    } else {
+      try {
+        const user = new User({
+          username: req.body.username,
+          password: req.body.password,
+        });
+
+        await user.save();
+        res
+          .status(201)
+          .json({ message: "User created!", links: usersLinks(req) });
+      } catch (error) {
+        // If an error, or validation error, occurred, view the form and an error message.
+        res.status(500).json({
+          message: "Error while creating user...",
+          error: error.message,
+          links: usersLinks(req),
+        });
+      }
+    }
+  });
+};
+
+/**
  * Login user.
  *
  * @param {object} req - Express request object.
@@ -140,31 +182,6 @@ newuserController.checkUser = async (req, res, next) => {
     res.status(500).json({
       message: "Error when getting user",
       error: error,
-      links: usersLinks(req),
-    });
-  }
-};
-
-/**
- * Saves the created user to the DB.
- *
- * @param {object} req - Express request object.
- * @param {object} res - Express response object.
- */
-newuserController.newUser = async (req, res) => {
-  try {
-    const user = new User({
-      username: req.body.username,
-      password: req.body.password,
-    });
-
-    await user.save();
-    res.status(201).json({ message: "User created!", links: usersLinks(req) });
-  } catch (error) {
-    // If an error, or validation error, occurred, view the form and an error message.
-    res.status(500).json({
-      message: "Error while creating user...",
-      error: error.message,
       links: usersLinks(req),
     });
   }
