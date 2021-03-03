@@ -13,7 +13,7 @@ const authorize = require("../controller/authorizeController");
 
 router
   .get("/", controller.index)
-  .post("/", controller.checkUser, controller.newUser)
+  .post("/", controller.newUser)
   .delete(
     "/",
     authorize.checkToken,
