@@ -185,8 +185,4 @@ newuserController.deleteUser = async (req, res) => {
   }
 };
 
-newuserController.error = async (req, res) => {
-  res.status(404).json({ message: "Not found", links: usersLinks(req) });
-};
-
 module.exports = newuserController;

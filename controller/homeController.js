@@ -19,7 +19,12 @@ const homeController = {};
  */
 homeController.index = async (req, res) => {
   res.status(200).json({
-    message: "Lnu Fish Club!",
+    meta: {
+      name: "LNU fish club",
+      author: "Mattias Ruljeff",
+      licence: "MIT",
+      version: "1.0",
+    },
     links: links(req),
   });
 };

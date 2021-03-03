@@ -14,9 +14,6 @@ const authorize = require("../controller/authorizeController");
 router
   .get("/", controller.index)
   .post("/", controller.newUser)
-
-  .post("/login", controller.login)
-
   .delete(
     "/",
     authorize.checkToken,
@@ -24,8 +21,8 @@ router
     controller.deleteUser
   )
 
-  .get("/find", controller.getUser)
+  .post("/login", controller.login)
 
-  .get("/*", controller.error);
+  .get("/find", controller.getUser);
 
 module.exports = router;

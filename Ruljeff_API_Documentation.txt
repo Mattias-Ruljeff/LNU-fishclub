@@ -1,0 +1,56 @@
+API start URI: http://lnu-fishclub.herokuapp.com/api/v1/
+
+Other recources: 
+
+Users: ------------------------------------------------------
+
+http://lnu-fishclub.herokuapp.com/api/v1/users
+
+    http-methods:
+    - GET - Lists all the users in the database.
+    - POST - Create a new user, needs to provide username and password.
+    - DELETE - Delete a user, needs to provide username and Json web token (needs to be logged in).
+
+http://lnu-fishclub.herokuapp.com/api/v1/users/login
+
+    http-methods:
+    - POST - Log in a user, needs to provide username and password.
+
+http://lnu-fishclub.herokuapp.com/api/v1/users/find/:username
+
+    http-methods:
+    - GET - Gets the information about one user in the database.
+
+
+Catches: ------------------------------------------------------
+
+http://lnu-fishclub.herokuapp.com/api/v1/catches
+
+    http-methods:
+    - GET - Lists all the catches from the database
+    - POST - Create a new catch to the database. Needs to provide username an Json web token (user needs to be logged in).
+    - DELETE - Delete a catch from the database. Needs to provide username an Json web token (user needs to be logged in).
+
+http://lnu-fishclub.herokuapp.com/api/v1/catches/:username
+
+    http-methods:
+    - GET - Lists all the catches from one user. Needs to provide username.
+
+http://lnu-fishclub.herokuapp.com/api/v1/catches/:catch-id
+
+    http-methods:
+    - GET - Get the information about one catch. Needs to provide catch id.
+
+
+Webhook: ------------------------------------------------------
+
+http://lnu-fishclub.herokuapp.com/api/v1/webhook
+
+    Lists all URIs in the webhook.
+
+http://lnu-fishclub.herokuapp.com/api/v1/webhook/subscribers
+
+    http-methods:
+    - GET - Get all the subscribed users in the database.
+    - POST - Add new subscriber to the webhook to the database, subscriber-URL must be provided.
+    - DELETE - Delete subscriber from the webhook from the database, subscriber-id must be provided.

@@ -12,6 +12,5 @@ router
   .post("/subscribers", controller.createSubscriber)
   .put("/subscribers", controller.updateOneSubscriber)
   .delete("/subscribers", controller.deleteOneSubscriber);
-// .post("/subscribers/notify", controller.notifySubscribers);
 
 module.exports = router;
