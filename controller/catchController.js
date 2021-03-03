@@ -22,9 +22,11 @@ catchController.index = async (req, res) => {
   try {
     Catch.find({}, (error, catches) => {
       if (error) {
-        return res
-          .status(500)
-          .json({ message: "Error when fetching catches", error });
+        return res.status(500).json({
+          message: "Error when fetching catches",
+          error,
+          links: catchesLinks(req),
+        });
       }
       if (catches.length > 0) {
         res.status(200).json({
@@ -40,7 +42,11 @@ catchController.index = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ message: "Error when fetching catches", error });
+    res.status(500).json({
+      message: "Error when fetching catches",
+      error,
+      links: catchesLinks(req),
+    });
   }
 };
 
@@ -57,6 +63,7 @@ catchController.getOneCatch = async (req, res) => {
         return res.status(400).json({
           message: "Error when fetching catch, id not available",
           err,
+          links: catchesLinks(req),
         });
       }
       if (oneCatch) {
@@ -91,19 +98,30 @@ catchController.getOneUsersCatches = async (req, res) => {
   try {
     Catch.find({ username: `${req.body.username}` }, (err, catches) => {
       if (err) {
-        res.status(400).json({ message: "Error when fetching catches", err });
+        res.status(400).json({
+          message: "Error when fetching catches",
+          err,
+          links: catchesLinks(req),
+        });
       }
       if (catches.length === 0) {
-        res.status(200).json({ message: "No cathes registered" });
+        res
+          .status(200)
+          .json({ message: "No cathes registered", links: catchesLinks(req) });
       } else {
         res.status(200).json({
           message: `All catches from user: ${req.body.username}`,
+          links: catchesLinks(req),
           result: catches,
         });
       }
     });
   } catch (error) {
-    res.status(500).json({ message: "Error when fetching catches", error });
+    res.status(500).json({
+      message: "Error when fetching catches",
+      error,
+      links: catchesLinks(req),
+    });
   }
 };
 
@@ -123,7 +141,6 @@ catchController.logCatch = async (req, res, next) => {
       city,
       lake,
     } = req.body;
-    console.log(req.user);
 
     try {
       const newCatch = new Catch({
@@ -136,12 +153,17 @@ catchController.logCatch = async (req, res, next) => {
         lake: lake,
       });
       await newCatch.save();
-      res.status(201).json({ message: "Catch saved!", catchId: newCatch.id });
+      res.status(201).json({
+        message: "Catch saved!",
+        catchId: newCatch.id,
+        links: catchesLinks(req),
+      });
       next();
     } catch (error) {
       res.status(500).json({
         message: "Error when logging catch...",
         error: error.message,
+        links: catchesLinks(req),
       });
     }
   }
@@ -193,6 +215,7 @@ catchController.updateCatch = async (req, res) => {
               res.status(400).json({
                 message: "Error when updating catch",
                 error: err.message,
+                links: catchesLinks(req),
               });
             } else {
               res.status(200).json({
@@ -210,12 +233,16 @@ catchController.updateCatch = async (req, res) => {
       }
     } catch (error) {
       // If an error, or validation error, occurred, view the form and an error message.
-      res
-        .status(500)
-        .json({ message: "Error when updating catch", error: error.message });
+      res.status(500).json({
+        message: "Error when updating catch",
+        error: error.message,
+        links: catchesLinks(req),
+      });
     }
   } else {
-    res.status(500).json({ message: "No request body provided" });
+    res
+      .status(500)
+      .json({ message: "No request body provided", links: catchesLinks(req) });
   }
 };
 
@@ -233,9 +260,11 @@ catchController.deleteOneCatch = async (req, res) => {
       console.log(id, "req.body.id");
       await Catch.findOne({ _id: req.body.id }, (err, data) => {
         if (err) {
-          return res
-            .status(400)
-            .json({ message: "Error while fetching catch", error: err });
+          return res.status(400).json({
+            message: "Error while fetching catch",
+            error: err,
+            links: catchesLinks(req),
+          });
         }
 
         // If the body is not providing all parameters, set the default values from the database.
@@ -247,32 +276,41 @@ catchController.deleteOneCatch = async (req, res) => {
                 res.status(500).json({
                   message: "Error when deleting catch",
                   error: err.message,
+                  links: catchesLinks(req),
                 });
               } else {
-                res.status(200).json({ message: `Catch ${id} deleted` });
+                res.status(200).json({
+                  message: `Catch ${id} deleted`,
+                  links: catchesLinks(req),
+                });
               }
             });
           } else {
             res.status(401).json({
               message: "Error when deleting catch, username does not match",
+              links: catchesLinks(req),
             });
           }
         } else {
           res.status(400).json({
             message: "Error when deleting catch, id not found",
+            links: catchesLinks(req),
           });
         }
       });
     } catch (error) {
       // If an error, or validation error, occurred, view the form and an error message.
-      return res
-        .status(500)
-        .json({ message: "Error when deleting catch", error: error.message });
+      return res.status(500).json({
+        message: "Error when deleting catch",
+        error: error.message,
+        links: catchesLinks(req),
+      });
     }
   } else {
-    res
-      .status(500)
-      .json({ message: "No request body provided when deleding catch" });
+    res.status(500).json({
+      message: "No request body provided when deleding catch",
+      links: catchesLinks(req),
+    });
   }
 };
 
