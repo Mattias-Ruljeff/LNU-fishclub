@@ -1,6 +1,6 @@
 ## Postman setup
 
-Import the postman collection and postman environment from the root folder in this project to your postman.
+Import the postman collection and postman environment from the folder "Postman" to your Postman-application.
 Run all the postman tests from the collection.
 
 # Examination assignment 2
