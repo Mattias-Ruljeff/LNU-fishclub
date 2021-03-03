@@ -1,11 +1,11 @@
+"use strict";
+
 /**
  * Webhook Controller.
  *
  * @author Mattias Ruljeff
  * @version 1.0
  */
-
-"use strict";
 require("dotenv").config();
 const fetch = require("node-fetch");
 const WebHook = require("../models/webbHooks");
@@ -34,13 +34,11 @@ webhookController.getAllSubscribers = async (req, res) => {
         error: error,
       });
     }
-    res
-      .status(200)
-      .json({
-        message: "All webhook subscribers fetched",
-        links: webhookLinks(req),
-        result: hooks,
-      });
+    res.status(200).json({
+      message: "All webhook subscribers fetched",
+      links: webhookLinks(req),
+      result: hooks,
+    });
   });
 };
 

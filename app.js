@@ -26,7 +26,7 @@ app.use("/api/v1", homeRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/catches", catchRouter);
 app.use("/api/v1/webhook", webhookRouter);
-app.use("*", (req, res, next) => {
+app.use("*", (req, res) => {
   res.status(404).json({ message: "Recource not found", links: links(req) });
 });
 

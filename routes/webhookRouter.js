@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const controller = require("../controller/webhookCorntroller");
+const controller = require("../controller/webhookController");
 const authorize = require("../controller/authorizeController");
 
 /* GET users listing. */
